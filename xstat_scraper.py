@@ -131,19 +131,19 @@ def view_log():
 
 
 #------------------------------------------------------------------------------------------------------
-'''i = 1
+i = 1
 while i > 0:
     cycle_start = time.time()
     view_log()
     cycle_end = time.time()
     cycle_time = cycle_end - cycle_start
     print('Cycle Time(s):', cycle_time)
-    print('cycle complete', time.strftime('%H:%M', time.localtime())
+    print('cycle complete', time.strftime('%H:%M', time.localtime()))
     goto('https://duckduckgo.com')
     time.sleep(1800) #30mins wait before  refresh
     print('Waiting 30mins')
     
-'''
+
     
 
 
