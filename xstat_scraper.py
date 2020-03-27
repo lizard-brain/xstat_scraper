@@ -24,7 +24,7 @@ from selenium.webdriver.support import expected_conditions as EC
 options = FirefoxOptions()
 #options.add_argument("--headless")
 print("Starting Firefox...")
-browser = Firefox(options=options, executable_path='/home/jace/Documents/Reddit_bot/geckodriver')
+browser = Firefox(options=options, executable_path='./geckodriver') # need to add directory to path
 print("Started",'\n')
 
 #------------------------------------------------------------------------------------------------------
@@ -131,7 +131,7 @@ def view_log():
 
 
 #------------------------------------------------------------------------------------------------------
-i = 1
+'''i = 1
 while i > 0:
     cycle_start = time.time()
     view_log()
@@ -143,7 +143,7 @@ while i > 0:
     time.sleep(1800) #30mins wait before  refresh
     print('Waiting 30mins')
     
-
+'''
     
 
 
