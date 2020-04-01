@@ -1,10 +1,5 @@
 '''
-Logs the views over time UTC Time
-
-0.8 Changed to read from index
-
-0.9 Logfiles changed to index numbers, swaped epoch time and view counts now: (24hr time, epoch, view cout)
-
+added feature to only update csv when views have changed by a certain amount
 
 '''
 #------------------------------------------------------------------------------------------------------
@@ -33,7 +28,7 @@ print("Started",'\n')
 
 def goto(url):
 
-    print("Loading Page...")
+    print("Loading Page:", url)
     browser.get(url)
     print("Loaded", '\n')
     
@@ -107,6 +102,17 @@ def like_scraper():
 
 #------------------------------------------------------------------------------------------------------
 
+
+# Setup a view list the size of how many videos are in database this is for the view_log function
+# the first run of the script will record data
+view_lst = []
+
+with open('database.csv', mode='r', newline='') as database_csv:
+    database = csv.reader(database_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    for row in database:
+        view_lst.append(1)
+
+        
 def view_log():
 
     
@@ -114,21 +120,32 @@ def view_log():
     
         database = csv.reader(database_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for row in database:
+            index = int(row[0])
+            #print(index)
             video_path = './data/' + row[0] + '_stats' 
             video_name = row[1]
             print(video_name)
-            #print(video_path)
             video_url = row[2]
-            print(video_url)
+            goto(video_url)
+            views = int(view_scraper())
+            
+            view_change = views - view_lst[index]
+            print('View Change:',view_change)
 
-            with open(video_path, mode='a', newline='') as video_csv: #a for append
-                csv_file = csv.writer(video_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                goto(video_url)
-                views = view_scraper()
-                csv_file.writerow([time.strftime('%H:%M', time.localtime()), time.time(), views ])
+            if view_change > 5:
+                       
+                with open(video_path, mode='a', newline='') as video_csv: #a for append
+                    csv_file = csv.writer(video_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                    print('Writing CSV...', '\n')
+                    csv_file.writerow([time.strftime('%H:%M', time.localtime()), time.time(), views ])
+                    view_lst[index] = views
+                    
+                    
+            else:
+                print('not enough change')
+                    
 
                 
-
 
 #------------------------------------------------------------------------------------------------------
 i = 1
@@ -138,22 +155,8 @@ while i > 0:
     cycle_end = time.time()
     cycle_time = cycle_end - cycle_start
     print('Cycle Time(s):', cycle_time)
-    print('cycle complete', time.strftime('%H:%M', time.localtime()))
+    print('cycle complete', time.strftime('%H:%M', time.localtime()), '\n')
     goto('https://duckduckgo.com')
-    time.sleep(1800) #30mins wait before  refresh
-    print('Waiting 30mins')
-    
-
-    
-
-
-
-    
-    
-    
-
-
-
-
-
+    print('Waiting 30mins', '\n')
+    time.sleep(450) #30mins wait before  refresh
 
