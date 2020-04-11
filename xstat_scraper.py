@@ -148,8 +148,9 @@ def view_log():
                 
 
 #------------------------------------------------------------------------------------------------------
-i = 1
-while i > 0:
+
+def run():
+    wait = 450
     cycle_start = time.time()
     view_log()
     cycle_end = time.time()
@@ -157,6 +158,15 @@ while i > 0:
     print('Cycle Time(s):', cycle_time)
     print('cycle complete', time.strftime('%H:%M', time.localtime()), '\n')
     goto('https://duckduckgo.com')
-    print('Waiting 30mins', '\n')
-    time.sleep(450) #30mins wait before  refresh
+    print('Waiting',wait/60, '\n')
+    #browser.close() keeps crashing
+    time.sleep(wait) #30mins wait before  refresh
+
+
+while True:
+    try:
+        run()
+    except:
+        print("Error")
+        time.sleep(15)
 
